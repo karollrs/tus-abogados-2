@@ -29,6 +29,8 @@ from retell_setup import retell_setup, RetellAgentSetup
 RETELL_API_KEY = os.getenv("RETELL_API_KEY", "")
 RETELL_WEBHOOK_SECRET = os.getenv("RETELL_WEBHOOK_SECRET", "")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
+RETELL_LLM_PROVIDER = os.getenv("RETELL_LLM_PROVIDER", "")
+RETELL_LLM_MODEL = os.getenv("RETELL_LLM_MODEL", "")
 CONVEX_URL = os.getenv("CONVEX_URL", "")
 DEMO_MODE = os.getenv("DEMO_MODE", "").lower() in ("1", "true", "yes")
 
@@ -76,6 +78,7 @@ class RetellWebhookPayload(BaseModel):
     recording_url: Optional[str] = None
     extracted_data: Optional[RetellExtractedData] = None
     transcript: Optional[List[dict]] = None
+    call_analysis: Optional[dict] = None
     status: str
     metadata: Optional[dict] = None
 
@@ -329,6 +332,12 @@ def add_demo_lead_from_retell(payload: RetellWebhookPayload) -> dict:
         payload.call_id,
         payload.agent_id,
     )
+    if payload.recording_url:
+        lead["recordingUrl"] = payload.recording_url
+    if payload.extracted_data and payload.extracted_data.summary:
+        lead["aiSummary"] = payload.extracted_data.summary
+    if payload.transcript:
+        lead["aiTranscript"] = json.dumps(payload.transcript)
     DEMO_LEADS.insert(0, lead)
     return lead
 
@@ -374,6 +383,96 @@ def verify_retell_webhook(payload: bytes, signature: str) -> bool:
     
     return hmac.compare_digest(f"sha256={expected}", signature)
 
+def _first_value(sources: List[dict], keys: List[str]) -> Optional[Any]:
+    for source in sources:
+        if not isinstance(source, dict):
+            continue
+        for key in keys:
+            if key in source and source[key] is not None:
+                return source[key]
+    return None
+
+def _normalize_status(event: str, status: Optional[str]) -> str:
+    allowed = {"completed", "failed", "no_answer", "voicemail", "transferred"}
+    normalized = (status or "").lower()
+    if normalized in allowed:
+        return normalized
+    event_normalized = (event or "").lower()
+    if "failed" in event_normalized:
+        return "failed"
+    if "no_answer" in event_normalized:
+        return "no_answer"
+    if "voicemail" in event_normalized:
+        return "voicemail"
+    if "transfer" in event_normalized:
+        return "transferred"
+    return "completed"
+
+def normalize_retell_payload(raw: dict) -> RetellWebhookPayload:
+    event = raw.get("event") or raw.get("type") or raw.get("event_type") or "call.unknown"
+    data = raw.get("data") if isinstance(raw.get("data"), dict) else {}
+    call = raw.get("call") if isinstance(raw.get("call"), dict) else {}
+    call_data = data.get("call") if isinstance(data.get("call"), dict) else {}
+
+    sources = [raw, data, call, call_data]
+
+    call_id = _first_value(sources, ["call_id", "callId", "id"])
+    agent_id = _first_value(sources, ["agent_id", "agentId", "agent"])
+    phone_number = _first_value(sources, ["phone_number", "phoneNumber", "from_number", "from", "caller_number"])
+    started_at = _first_value(sources, ["started_at", "startedAt", "start_timestamp", "start_time", "startTime"])
+    ended_at = _first_value(sources, ["ended_at", "endedAt", "end_timestamp", "end_time", "endTime"])
+    duration_seconds = _first_value(sources, ["duration_seconds", "durationSeconds", "duration"])
+    transcript = _first_value(sources, ["transcript", "transcripts"])
+    extracted_data = _first_value(sources, ["extracted_data", "extractedData"])
+    call_analysis = _first_value(sources, ["call_analysis", "callAnalysis", "analysis"])
+    recording_url = _first_value(
+        sources + [raw.get("media", {})],
+        [
+            "recording_url",
+            "recordingUrl",
+            "recording_uri",
+            "recording",
+            "recording_multi_channel_url",
+            "recording_multi_channel_uri",
+            "public_log_url",
+        ],
+    )
+
+    metadata = raw.get("metadata") if isinstance(raw.get("metadata"), dict) else {}
+    if isinstance(data.get("metadata"), dict):
+        metadata = {**metadata, **data.get("metadata")}
+
+    if not extracted_data and isinstance(call_analysis, dict):
+        summary = call_analysis.get("summary") or call_analysis.get("call_summary")
+        if summary:
+            extracted_data = {"summary": summary}
+
+    if not call_id:
+        raise ValueError("Missing call_id in Retell webhook payload")
+
+    if not started_at:
+        started_at = int(time.time())
+
+    normalized_status = _normalize_status(event, _first_value(sources, ["status", "call_status", "callStatus"]))
+
+    payload = {
+        "event": event,
+        "call_id": call_id,
+        "agent_id": agent_id or "unknown_agent",
+        "phone_number": phone_number or "unknown",
+        "direction": _first_value(sources, ["direction"]) or "inbound",
+        "started_at": int(started_at),
+        "ended_at": int(ended_at) if ended_at else None,
+        "duration_seconds": int(duration_seconds) if duration_seconds else None,
+        "recording_url": recording_url,
+        "extracted_data": extracted_data,
+        "transcript": transcript,
+        "call_analysis": call_analysis if isinstance(call_analysis, dict) else None,
+        "status": normalized_status,
+        "metadata": metadata or None,
+    }
+    return RetellWebhookPayload(**payload)
+
 @app.post("/webhooks/retell")
 async def retell_webhook(
     request: Request,
@@ -392,7 +491,7 @@ async def retell_webhook(
     
     try:
         data = json.loads(body)
-        payload = RetellWebhookPayload(**data)
+        payload = normalize_retell_payload(data)
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Invalid payload: {str(e)}")
     
@@ -427,6 +526,8 @@ async def process_retell_webhook(payload: RetellWebhookPayload):
             "recordingUrl": payload.recording_url,
             "extractedData": payload.extracted_data.dict() if payload.extracted_data else None,
             "transcript": payload.transcript,
+            "callAnalysis": payload.call_analysis,
+            "metadata": payload.metadata,
             "status": payload.status,
         })
         
@@ -509,9 +610,15 @@ async def setup_complete_agent(request: SetupAgentRequest):
     try:
         llm_config = {
             "start_speaker": "agent",
-            "begin_message": "¡Gracias por llamar a Tusa Gato's 24/7! Soy tu asistente virtual. ¿Con quién tengo el gusto de hablar?",
+            "begin_message": "¡Gracias por llamar a Tus Abogados 24/7! Soy tu asistente virtual. ¿Con quién tengo el gusto de hablar?",
             "general_prompt": get_intake_prompt(),
         }
+        if RETELL_LLM_PROVIDER:
+            llm_config["llm_provider"] = RETELL_LLM_PROVIDER
+        if RETELL_LLM_MODEL:
+            llm_config["llm_model"] = RETELL_LLM_MODEL
+        if RETELL_LLM_PROVIDER.lower() == "openrouter" and OPENROUTER_API_KEY:
+            llm_config["llm_api_key"] = OPENROUTER_API_KEY
 
         llm = await retell.create_retell_llm(llm_config)
         response_engine = {
@@ -521,7 +628,7 @@ async def setup_complete_agent(request: SetupAgentRequest):
 
         # Create the agent directly using retell client
         agent_config = {
-            "agent_name": "TusaGatos-Intake-v1",
+            "agent_name": "Tus-Abogados-24/7",
             "voice_id": "11labs-Adrian",
             "language": "es-419",
             "webhook_url": webhook_url,
@@ -556,9 +663,9 @@ async def setup_complete_agent(request: SetupAgentRequest):
 
 def get_intake_prompt() -> str:
     """Get the complete intake prompt for Tusa Gato's 24/7"""
-    return """# Tusa Gato's 24/7 - AI Receptionist
+    return """# Tus Abogados 24/7 - AI Receptionist
 
-Eres la recepcionista virtual de **Tusa Gato's 24/7**, una red de referencia legal para la comunidad hispana en NY/NJ.
+Eres la recepcionista virtual de **Tus Abogados 24/7** (Tusa Gato's 24/7), una red de referencia legal para la comunidad hispana en NY/NJ.
 
 ## INFORMACIÓN OBLIGATORIA:
 1. Nombre completo (first_name, last_name)
@@ -570,11 +677,11 @@ Eres la recepcionista virtual de **Tusa Gato's 24/7**, una red de referencia leg
 7. Nivel de urgencia (urgency: emergency, high, medium, low)
 
 ## FLUJO:
-1. Saluda: "¡Gracias por llamar a Tusa Gato's 24/7! ¿Con quién tengo el gusto de hablar?"
+1. Saluda: "¡Gracias por llamar a Tus Abogados 24/7! ¿Con quién tengo el gusto de hablar?"
 2. Recopila información paso a paso
 3. Haz preguntas contextuales según el tipo de caso
 4. Confirma la información antes de terminar
-5. Cierra: "Un abogado te contactará pronto. Gracias por llamar."
+5. Cierra: "Un abogado te contactará pronto. Gracias por llamar a Tus Abogados 24/7."
 
 ## REGLAS:
 - NO des consejo legal

@@ -201,6 +201,7 @@ export const create = mutation({
     aiTranscript: v.optional(v.string()),
     aiSummary: v.optional(v.string()),
     extractedData: v.optional(v.any()),
+    recordingUrl: v.optional(v.string()),
     callbackRequested: v.boolean(),
   },
   handler: async (ctx, args) => {
@@ -492,48 +493,85 @@ export const handleRetellWebhook = mutation({
     recordingUrl: v.optional(v.string()),
     extractedData: v.optional(v.any()),
     transcript: v.optional(v.array(v.any())),
+    callAnalysis: v.optional(v.any()),
+    metadata: v.optional(v.any()),
     status: v.string(),
   },
   handler: async (ctx, args) => {
     const now = Date.now();
+    const normalizedStatus = normalizeCallStatus(args.status, args.event);
+    const finalEvent = isFinalCallEvent(args.event);
 
-    // Create call log
-    const callLogId = await ctx.db.insert("callLogs", {
-      retellCallId: args.callId,
-      retellAgentId: args.agentId,
-      phoneNumber: args.phoneNumber,
-      direction: "inbound",
-      status: args.status as any,
-      startedAt: args.startedAt,
-      endedAt: args.endedAt,
-      durationSeconds: args.durationSeconds,
-      recordingUrl: args.recordingUrl,
-      rawTranscript: args.transcript,
-      extractedData: args.extractedData,
-    });
+    const existingCallLog = await ctx.db
+      .query("callLogs")
+      .withIndex("by_retell_call_id", (q) => q.eq("retellCallId", args.callId))
+      .first();
+
+    let callLogId = existingCallLog?._id;
+    if (existingCallLog) {
+      await ctx.db.patch(existingCallLog._id, {
+        retellAgentId: args.agentId || existingCallLog.retellAgentId,
+        phoneNumber: args.phoneNumber || existingCallLog.phoneNumber,
+        status: normalizedStatus as any,
+        startedAt: args.startedAt || existingCallLog.startedAt,
+        endedAt: args.endedAt || existingCallLog.endedAt,
+        durationSeconds: args.durationSeconds || existingCallLog.durationSeconds,
+        recordingUrl: args.recordingUrl || existingCallLog.recordingUrl,
+        rawTranscript: args.transcript || existingCallLog.rawTranscript,
+        extractedData: args.extractedData || existingCallLog.extractedData,
+        metadata: args.metadata || existingCallLog.metadata,
+        sentimentScore: extractSentimentScore(args.callAnalysis) ?? existingCallLog.sentimentScore,
+      });
+    } else {
+      callLogId = await ctx.db.insert("callLogs", {
+        retellCallId: args.callId,
+        retellAgentId: args.agentId,
+        phoneNumber: args.phoneNumber,
+        direction: "inbound",
+        status: normalizedStatus as any,
+        startedAt: args.startedAt,
+        endedAt: args.endedAt,
+        durationSeconds: args.durationSeconds,
+        recordingUrl: args.recordingUrl,
+        rawTranscript: args.transcript,
+        extractedData: args.extractedData,
+        metadata: args.metadata,
+        sentimentScore: extractSentimentScore(args.callAnalysis),
+      });
+    }
 
     // If call completed with extracted data, create lead
-    if (args.event === "call.completed" && args.extractedData) {
+    if (finalEvent && (args.extractedData || args.callAnalysis)) {
+      const existingLead = await ctx.db
+        .query("leads")
+        .withIndex("by_retell_call_id", (q) => q.eq("retellCallId", args.callId))
+        .first();
+      if (existingLead) {
+        return { success: true, callLogId, leadId: existingLead._id, leadStatus: existingLead.status };
+      }
+
       const data = args.extractedData;
+      const summary = extractSummary(data, args.callAnalysis);
       
       const leadResult = await ctx.runMutation(api.leads.create, {
-        phone: data.phone || args.phoneNumber,
-        firstName: data.first_name || data.name?.split(" ")[0],
-        lastName: data.last_name || data.name?.split(" ").slice(1).join(" "),
-        email: data.email,
-        caseType: data.case_type || "other",
-        county: data.county || "Unknown",
-        state: data.state || "NY",
-        incidentDate: data.incident_date,
-        description: data.description,
-        urgency: data.urgency || "medium",
-        languagePref: data.language_preference || "spanish",
+        phone: data?.phone || args.phoneNumber,
+        firstName: data?.first_name || data?.name?.split(" ")[0],
+        lastName: data?.last_name || data?.name?.split(" ").slice(1).join(" "),
+        email: data?.email,
+        caseType: data?.case_type || "other",
+        county: data?.county || "Unknown",
+        state: data?.state || "NY",
+        incidentDate: data?.incident_date,
+        description: data?.description,
+        urgency: data?.urgency || "medium",
+        languagePref: data?.language_preference || "spanish",
         source: "ai_receptionist",
         retellCallId: args.callId,
         aiTranscript: args.transcript ? JSON.stringify(args.transcript) : undefined,
-        aiSummary: data.summary,
-        extractedData: data,
-        callbackRequested: data.callback_requested || false,
+        aiSummary: summary,
+        extractedData: data || args.callAnalysis,
+        recordingUrl: args.recordingUrl,
+        callbackRequested: data?.callback_requested || false,
       });
 
       // Update call log with lead reference
@@ -597,6 +635,44 @@ function calculateQualificationScore(args: any): number {
   }
 
   return Math.min(score, 100);
+}
+
+function isFinalCallEvent(event: string): boolean {
+  const normalized = event.toLowerCase();
+  return (
+    normalized.includes("call.completed") ||
+    normalized.includes("call.ended") ||
+    normalized.includes("call.analyzed") ||
+    normalized.includes("call_analyzed") ||
+    normalized.includes("call_ended")
+  );
+}
+
+function normalizeCallStatus(status: string, event: string): string {
+  const normalized = (status || "").toLowerCase();
+  const eventNormalized = (event || "").toLowerCase();
+  const allowed = ["completed", "failed", "no_answer", "voicemail", "transferred"];
+  if (allowed.includes(normalized)) {
+    return normalized;
+  }
+  if (eventNormalized.includes("failed")) return "failed";
+  if (eventNormalized.includes("no_answer")) return "no_answer";
+  if (eventNormalized.includes("voicemail")) return "voicemail";
+  if (eventNormalized.includes("transfer")) return "transferred";
+  return "completed";
+}
+
+function extractSummary(extractedData?: any, callAnalysis?: any): string | undefined {
+  if (extractedData?.summary) return extractedData.summary;
+  if (callAnalysis?.summary) return callAnalysis.summary;
+  if (callAnalysis?.call_summary) return callAnalysis.call_summary;
+  return undefined;
+}
+
+function extractSentimentScore(callAnalysis?: any): number | undefined {
+  const score = callAnalysis?.sentiment_score ?? callAnalysis?.sentimentScore;
+  if (typeof score === "number") return score;
+  return undefined;
 }
 
 function getPriorityScore(urgency: string, qualificationScore: number): number {

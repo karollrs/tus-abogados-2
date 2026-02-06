@@ -10,6 +10,9 @@ from typing import Optional, List, Dict, Any
 
 RETELL_API_KEY = os.getenv("RETELL_API_KEY", "")
 RETELL_WEBHOOK_URL = os.getenv("RETELL_WEBHOOK_URL", "https://your-api.com/webhooks/retell")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
+RETELL_LLM_PROVIDER = os.getenv("RETELL_LLM_PROVIDER", "")
+RETELL_LLM_MODEL = os.getenv("RETELL_LLM_MODEL", "")
 
 class RetellAgentSetup:
     """Setup and manage RetellAI agents for Tusa Gato's 24/7"""
@@ -49,9 +52,15 @@ class RetellAgentSetup:
 
         llm_config = {
             "start_speaker": "agent",
-            "begin_message": "¡Gracias por llamar a Tusa Gato's 24/7! Soy tu asistente virtual. ¿Con quién tengo el gusto de hablar?",
+            "begin_message": "¡Gracias por llamar a Tus Abogados 24/7! Soy tu asistente virtual. ¿Con quién tengo el gusto de hablar?",
             "general_prompt": self._get_intake_prompt(),
         }
+        if RETELL_LLM_PROVIDER:
+            llm_config["llm_provider"] = RETELL_LLM_PROVIDER
+        if RETELL_LLM_MODEL:
+            llm_config["llm_model"] = RETELL_LLM_MODEL
+        if RETELL_LLM_PROVIDER.lower() == "openrouter" and OPENROUTER_API_KEY:
+            llm_config["llm_api_key"] = OPENROUTER_API_KEY
 
         llm = await self.create_retell_llm(llm_config)
         response_engine = {
@@ -60,7 +69,7 @@ class RetellAgentSetup:
         }
 
         agent_config = {
-            "agent_name": "TusaGatos-Intake-v1",
+            "agent_name": "Tus-Abogados-24/7",
             "voice_id": "11labs-Adrian",  # Warm, professional male voice
             "language": "es-419",
             "webhook_url": webhook_url,
@@ -145,9 +154,9 @@ class RetellAgentSetup:
         Complete intake prompt for the AI Receptionist
         Optimized for Hispanic market in NY/NJ
         """
-        return """# Tusa Gato's 24/7 - AI Receptionist
+        return """# Tus Abogados 24/7 - AI Receptionist
 
-Eres la recepcionista virtual de **Tusa Gato's 24/7** (Tus Abogados 24/7), una red de referencia legal especializada en servir a la comunidad hispana en Nueva York y Nueva Jersey.
+Eres la recepcionista virtual de **Tus Abogados 24/7** (Tusa Gato's 24/7), una red de referencia legal especializada en servir a la comunidad hispana en Nueva York y Nueva Jersey.
 
 ## TU PERSONALIDAD
 - **Calida y empática**: Escuchas con paciencia y comprensión
@@ -210,7 +219,7 @@ Determinar nivel de urgencia:
 ## FLUJO DE CONVERSACIÓN
 
 ### SALUDO INICIAL
-"¡Gracias por llamar a Tusa Gato's 24/7! Soy tu asistente virtual. ¿Con quién tengo el gusto de hablar?"
+"¡Gracias por llamar a Tus Abogados 24/7! Soy tu asistente virtual. ¿Con quién tengo el gusto de hablar?"
 
 ### RECOPILACIÓN DE DATOS
 Ve recopilando la información paso a paso. Si el cliente da información extra, anótala.
