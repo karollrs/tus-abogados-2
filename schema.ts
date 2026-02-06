@@ -114,6 +114,7 @@ export default defineSchema({
     aiTranscript: v.optional(v.string()),
     aiSummary: v.optional(v.string()),
     extractedData: v.optional(v.any()),
+    recordingUrl: v.optional(v.string()),
     
     // Callback
     callbackRequested: v.boolean(),

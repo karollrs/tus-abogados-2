@@ -254,6 +254,18 @@ function populateLeadDetail(lead) {
     if (notesArea && lead.aiTranscript) {
         notesArea.value = lead.aiTranscript;
     }
+
+    // Update call recording link
+    const recordingLink = document.getElementById('call-recording-link');
+    if (recordingLink) {
+        if (lead.recordingUrl) {
+            recordingLink.href = lead.recordingUrl;
+            recordingLink.textContent = 'Play recording';
+        } else {
+            recordingLink.removeAttribute('href');
+            recordingLink.textContent = 'Not available';
+        }
+    }
 }
 
 // Initialize
