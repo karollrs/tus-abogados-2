@@ -1,0 +1,2575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tus Abogados 24/7 - Legal Lead Intake CRM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #f0f2f5;
+            --bg-secondary: #e8eaed;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --metal-light: #f5f5f7;
+            --metal-mid: #e0e0e5;
+            --metal-dark: #c5c5cc;
+            --chrome-start: #ffffff;
+            --chrome-mid: #f0f0f2;
+            --chrome-end: #d5d5db;
+            --accent-blue: #2563eb;
+            --accent-blue-hover: #1d4ed8;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --border-light: rgba(255, 255, 255, 0.8);
+            --border-dark: rgba(0, 0, 0, 0.08);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-chrome: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 4px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.05);
+            --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #e8eaed 0%, #f0f2f5 50%, #e5e7eb 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        /* Chrome/Metallic Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 12px;
+            border: 1px solid var(--border-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.1) 100%);
+            border-radius: 12px 12px 0 0;
+            pointer-events: none;
+        }
+
+        .btn-chrome {
+            background: linear-gradient(180deg, var(--chrome-start) 0%, var(--chrome-mid) 50%, var(--chrome-end) 100%);
+            box-shadow: var(--shadow-chrome), 0 1px 2px rgba(0,0,0,0.1);
+            color: var(--text-primary);
+        }
+
+        .btn-chrome:hover {
+            background: linear-gradient(180deg, #ffffff 0%, #f5f5f7 50%, #e0e0e5 100%);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-chrome), 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .btn-chrome:active {
+            transform: translateY(0);
+            background: linear-gradient(180deg, #e0e0e5 0%, #d5d5db 100%);
+            box-shadow: var(--shadow-inner);
+        }
+
+        .btn-primary {
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+            color: white;
+            border-color: rgba(29, 78, 216, 0.5);
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-primary::before {
+            background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-success {
+            background: linear-gradient(180deg, #34d399 0%, #10b981 50%, #059669 100%);
+            color: white;
+            border-color: rgba(5, 150, 105, 0.5);
+            box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-success::before {
+            background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(180deg, #6ee7b7 0%, #34d399 50%, #10b981 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-amber {
+            background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+            color: white;
+            border-color: rgba(217, 119, 6, 0.5);
+            box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-amber::before {
+            background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(180deg, #f87171 0%, #ef4444 50%, #dc2626 100%);
+            color: white;
+            border-color: rgba(220, 38, 38, 0.5);
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-danger::before {
+            background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        .btn-purple {
+            background: linear-gradient(180deg, #a78bfa 0%, #8b5cf6 50%, #7c3aed 100%);
+            color: white;
+            border-color: rgba(124, 58, 237, 0.5);
+            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .btn-purple::before {
+            background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        .btn-lg {
+            padding: 14px 28px;
+            font-size: 15px;
+            border-radius: 14px;
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+            border-radius: 10px;
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 12px;
+        }
+
+        /* Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #fafafa 0%, #f0f0f2 100%);
+            border-right: 1px solid var(--border-dark);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            box-shadow: 4px 0 12px rgba(0,0,0,0.04);
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #3d7ab5 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .logo-text span {
+            font-weight: 500;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            padding: 0 12px 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.6);
+            color: var(--text-primary);
+            border-color: var(--border-dark);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(37, 99, 235, 0.04) 100%);
+            color: var(--accent-blue);
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border-dark);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
+            border-radius: 14px;
+            border: 1px solid var(--border-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 24px 32px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Chrome Card Style */
+        .chrome-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border-dark);
+            box-shadow: var(--shadow-chrome), var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-dark);
+            box-shadow: var(--shadow-chrome), var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .stat-card.blue::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .stat-card.green::before { background: linear-gradient(90deg, #10b981, #34d399); }
+        .stat-card.amber::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .stat-card.purple::before { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -1px;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .stat-change.positive { color: var(--accent-green); }
+        .stat-change.negative { color: var(--accent-red); }
+
+        /* AI Overview Card */
+        .ai-card {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #3d7ab5 100%);
+            border-radius: 16px;
+            padding: 20px 24px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.15);
+            margin-bottom: 24px;
+        }
+
+        .ai-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .ai-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .ai-text h3 {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+
+        .ai-text .ai-count {
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #34d399;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #34d399;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* AI Receptionist Control Panel */
+        .retell-card {
+            margin-top: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            border-radius: 18px;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .retell-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: linear-gradient(180deg, #ffffff 0%, #f5f6f8 100%);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .retell-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .retell-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .retell-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--text-primary);
+        }
+
+        .retell-status[data-state="offline"] {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .retell-status .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-shadow: none;
+            animation: none;
+            background: #34d399;
+        }
+
+        .retell-status[data-state="offline"] .status-dot {
+            background: #ef4444;
+        }
+
+        .retell-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            padding: 20px 24px 24px;
+        }
+
+        .retell-panel {
+            background: linear-gradient(180deg, #ffffff 0%, #f6f7f9 100%);
+            border: 1px solid var(--border-dark);
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .retell-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .retell-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .retell-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .retell-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .retell-select {
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .retell-callout {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .filter-select {
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-dark);
+            background: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
+            font-size: 13px;
+            color: var(--text-primary);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            min-width: 160px;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 320px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 14px 10px 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border-dark);
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            font-size: 14px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 14px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            background: linear-gradient(180deg, #f9fafb 0%, #f3f4f6 100%);
+            border-bottom: 1px solid var(--border-dark);
+            white-space: nowrap;
+        }
+
+        .data-table th:first-child { border-radius: 12px 0 0 0; }
+        .data-table th:last-child { border-radius: 0 12px 0 0; }
+
+        .data-table td {
+            padding: 16px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border-dark);
+            vertical-align: middle;
+        }
+
+        .data-table tr:hover td {
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.03) 0%, rgba(59, 130, 246, 0.01) 100%);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Lead Cell Styles */
+        .lead-id {
+            font-family: 'SF Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-blue);
+            background: linear-gradient(180deg, rgba(37, 99, 235, 0.08) 0%, rgba(37, 99, 235, 0.04) 100%);
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(37, 99, 235, 0.15);
+            display: inline-block;
+        }
+
+        .phone-number {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .phone-number i {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+        }
+
+        .case-type {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .case-badge {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .case-badge.personal-injury { background: #ef4444; }
+        .case-badge.divorce { background: #8b5cf6; }
+        .case-badge.dui { background: #f59e0b; }
+        .case-badge.bankruptcy { background: #3b82f6; }
+        .case-badge.criminal { background: #1f2937; }
+
+        .location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .location i {
+            color: var(--accent-blue);
+        }
+
+        /* Score Badge */
+        .score-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .score-high {
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.08) 100%);
+            color: #059669;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .score-medium {
+            background: linear-gradient(180deg, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.08) 100%);
+            color: #d97706;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .score-low {
+            background: linear-gradient(180deg, rgba(239, 68, 68, 0.12) 0%, rgba(239, 68, 68, 0.08) 100%);
+            color: #dc2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* Time Display */
+        .time-received {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .time-received .time {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .time-received .date {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Action Buttons in Table */
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Status Indicators */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-new {
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0.08) 100%);
+            color: #2563eb;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .status-contacted {
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%);
+            color: #7c3aed;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .status-negotiating {
+            background: linear-gradient(180deg, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.08) 100%);
+            color: #d97706;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .status-matched {
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.08) 100%);
+            color: #059669;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-top: 1px solid var(--border-dark);
+            background: linear-gradient(180deg, #fafafa 0%, #f5f5f7 100%);
+        }
+
+        .pagination-info {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .pagination-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Page Toggle for Demo */
+        .page-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            gap: 8px;
+            z-index: 200;
+            background: rgba(255,255,255,0.9);
+            padding: 8px;
+            border-radius: 14px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-dark);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Hide/Show Pages */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Lead Detail Page Styles */
+        .lead-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .lead-detail-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .lead-title-info h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .lead-title-info p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .lead-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Detail Grid */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .detail-main {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .detail-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Info Card */
+        .info-section {
+            margin-bottom: 20px;
+        }
+
+        .info-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .info-value.large {
+            font-size: 20px;
+        }
+
+        .info-value.phone {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent-green);
+        }
+
+        /* AI Summary Box */
+        .ai-summary-box {
+            background: linear-gradient(180deg, rgba(30, 58, 95, 0.04) 0%, rgba(30, 58, 95, 0.02) 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(30, 58, 95, 0.1);
+        }
+
+        .ai-summary-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .ai-summary-header i {
+            color: var(--accent-blue);
+            font-size: 18px;
+        }
+
+        .ai-summary-header span {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .ai-summary-content {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .ai-summary-content p {
+            margin-bottom: 12px;
+        }
+
+        .ai-summary-content strong {
+            color: var(--text-primary);
+        }
+
+        .ai-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .ai-tag {
+            background: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-dark);
+        }
+
+        /* Action Panel */
+        .action-panel {
+            background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .action-panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .action-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 14px 20px;
+        }
+
+        .action-btn i {
+            font-size: 16px;
+        }
+
+        /* Price Display */
+        .price-display {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            border-radius: 16px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.25);
+        }
+
+        .price-label {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.8;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .price-value {
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .price-note {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 8px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--border-dark) 0%, var(--border-dark) 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -24px;
+            top: 2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .timeline-dot.completed {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        .timeline-content {
+            font-size: 13px;
+        }
+
+        .timeline-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .timeline-text {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .timeline-text strong {
+            color: var(--text-primary);
+        }
+
+        /* Notes Text Area */
+        .notes-area {
+            width: 100%;
+            min-height: 200px;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-dark);
+            background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .notes-area:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Section Header with Icon */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .section-icon.blue {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+            color: var(--accent-blue);
+        }
+
+        .section-icon.green {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+            color: var(--accent-green);
+        }
+
+        .section-icon.amber {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+            color: var(--accent-amber);
+        }
+
+        .section-title-text h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .section-title-text p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Ask AI Assistant Button */
+        .ask-ai-container {
+            margin-bottom: 24px;
+        }
+
+        .btn-ask-ai {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 24px;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #3d7ab5 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-ask-ai::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%);
+            border-radius: 16px 16px 0 0;
+            pointer-events: none;
+        }
+
+        .btn-ask-ai:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(30, 58, 95, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, #234670 0%, #326599 50%, #4488c7 100%);
+        }
+
+        .btn-ask-ai:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .ask-ai-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .ask-ai-icon i {
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.1) rotate(5deg); opacity: 0.9; }
+        }
+
+        .ask-ai-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+            text-align: left;
+        }
+
+        .ask-ai-title {
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+        }
+
+        .ask-ai-subtitle {
+            font-size: 13px;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+
+        .ask-ai-arrow {
+            font-size: 14px;
+            opacity: 0.7;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-ask-ai:hover .ask-ai-arrow {
+            transform: translateX(4px);
+            opacity: 1;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--metal-light) 0%, var(--metal-mid) 100%);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            color: var(--text-muted);
+            border: 1px solid var(--border-dark);
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-scale-balanced"></i>
+                    </div>
+                    <div class="logo-text">
+                        Tus Abogados<br><span>24/7 Legal Lead CRM</span>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <div class="nav-item active" onclick="showPage('dashboard')">
+                        <i class="fas fa-inbox"></i>
+                        Lead Queue
+                        <span class="nav-badge">12</span>
+                    </div>
+                    <div class="nav-item" onclick="showPage('dashboard')">
+                        <i class="fas fa-check-circle"></i>
+                        Matched Leads
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-clock"></i>
+                        Pending Review
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-archive"></i>
+                        Archive
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Analytics</div>
+                    <div class="nav-item">
+                        <i class="fas fa-chart-line"></i>
+                        Performance
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-phone-volume"></i>
+                        Call Analytics
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Geographic Data
+                    </div>
+                </div>
+                
+                <div class="nav-section">
+                    <div class="nav-section-title">Settings</div>
+                    <div class="nav-item">
+                        <i class="fas fa-users"></i>
+                        Attorney Network
+                    </div>
+                    <div class="nav-item">
+                        <i class="fas fa-cog"></i>
+                        Configuration
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Lead Manager</div>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--text-muted); font-size: 12px;"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- DASHBOARD PAGE -->
+            <div id="dashboard-page" class="page active">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Lead Queue</h1>
+                        <p class="page-subtitle">Manage and distribute incoming legal leads</p>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-purple" onclick="setupRetellAgent()">
+                            <i class="fas fa-robot"></i>
+                            Setup AI Agent
+                        </button>
+                        <button class="btn btn-amber" onclick="testIncomingCall()">
+                            <i class="fas fa-phone"></i>
+                            Test Call
+                        </button>
+                        <button class="btn btn-chrome" onclick="loadDashboard()">
+                            <i class="fas fa-sync"></i>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="stats-grid">
+                    <div class="stat-card blue">
+                        <div class="stat-label">New Leads Today</div>
+                        <div class="stat-value">24</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up" style="font-size: 10px;"></i> 18% vs yesterday
+                        </div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-label">Matched This Week</div>
+                        <div class="stat-value">47</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up" style="font-size: 10px;"></i> 12% vs last week
+                        </div>
+                    </div>
+                    <div class="stat-card amber">
+                        <div class="stat-label">Avg. Response Time</div>
+                        <div class="stat-value">4.2m</div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-down" style="font-size: 10px;"></i> 30s improvement
+                        </div>
+                    </div>
+                    <div class="stat-card purple">
+                        <div class="stat-label">Conversion Rate</div>
+                        <div class="stat-value">34%</div>
+                        <div class="stat-change negative">
+                            <i class="fas fa-arrow-down" style="font-size: 10px;"></i> 2% vs last week
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Overview Card -->
+                <div class="ai-card">
+                    <div class="ai-info">
+                        <div class="ai-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="ai-text">
+                            <h3>Calls Handled by AI Today</h3>
+                            <div class="ai-count">52</div>
+                        </div>
+                    </div>
+                    <div class="ai-status">
+                        <div class="status-dot"></div>
+                        <span>AI Intake System Active</span>
+                    </div>
+                </div>
+
+                <!-- AI Receptionist Control Panel -->
+                <div class="retell-card">
+                    <div class="retell-header">
+                        <div>
+                            <div class="retell-title">AI Receptionist Live</div>
+                            <div class="retell-subtitle">RetellAI voice agent connected to CRM intake</div>
+                        </div>
+                        <div class="retell-status" id="retell-status" data-state="offline">
+                            <div class="status-dot"></div>
+                            <span id="retell-status-text">Disconnected</span>
+                        </div>
+                    </div>
+                    <div class="retell-grid">
+                        <div class="retell-panel">
+                            <div class="retell-label">Agent</div>
+                            <div class="retell-value" id="retell-agent-name">Not created</div>
+                            <div class="retell-meta" id="retell-agent-id">Agent ID: —</div>
+                            <div class="retell-meta" id="retell-llm-id">LLM ID: —</div>
+                            <div class="retell-actions">
+                                <button class="btn btn-purple btn-sm" onclick="setupRetellAgent()">
+                                    <i class="fas fa-robot"></i>
+                                    Create Agent
+                                </button>
+                                <button class="btn btn-chrome btn-sm" onclick="loadRetellPanel()">
+                                    <i class="fas fa-sync"></i>
+                                    Refresh
+                                </button>
+                            </div>
+                        </div>
+                        <div class="retell-panel">
+                            <div class="retell-label">Phone Number</div>
+                            <div class="retell-value" id="retell-phone-current">Not connected</div>
+                            <select id="retell-phone-select" class="filter-select retell-select"></select>
+                            <div class="retell-actions">
+                                <button class="btn btn-success btn-sm" onclick="connectSelectedNumber()">
+                                    <i class="fas fa-link"></i>
+                                    Connect
+                                </button>
+                            </div>
+                            <div class="retell-meta" id="retell-phone-meta"></div>
+                        </div>
+                        <div class="retell-panel">
+                            <div class="retell-label">Demo Flow</div>
+                            <div class="retell-value">Call <span id="retell-demo-number">—</span></div>
+                            <div class="retell-callout">
+                                <i class="fas fa-circle-info"></i>
+                                <span>AI collects intake details, then posts a lead into the CRM.</span>
+                            </div>
+                            <div class="retell-actions">
+                                <button class="btn btn-amber btn-sm" onclick="testIncomingCall()">
+                                    <i class="fas fa-phone"></i>
+                                    Simulate Call
+                                </button>
+                                <button class="btn btn-chrome btn-sm" onclick="loadDashboard()">
+                                    <i class="fas fa-sync"></i>
+                                    Refresh Leads
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ask AI Assistant Button -->
+                <div class="ask-ai-container">
+                    <button class="btn btn-ask-ai" onclick="showNotification('AI Assistant chat opened')">
+                        <div class="ask-ai-icon">
+                            <i class="fas fa-sparkles"></i>
+                        </div>
+                        <div class="ask-ai-text">
+                            <span class="ask-ai-title">Ask AI Assistant</span>
+                            <span class="ask-ai-subtitle">Ask anything about clients, cases, or leads</span>
+                        </div>
+                        <i class="fas fa-chevron-right ask-ai-arrow"></i>
+                    </button>
+                </div>
+
+                <!-- Leads Table Card -->
+                <div class="chrome-card">
+                    <div class="card-header">
+                        <div class="card-title">Recent Leads</div>
+                        <div class="filter-bar" style="margin: 0;">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" placeholder="Search leads...">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 0 24px 16px;">
+                        <div class="filter-bar" style="margin: 0; padding-top: 16px; border-top: 1px solid var(--border-dark);">
+                            <div class="filter-group">
+                                <span class="filter-label">Case Type:</span>
+                                <select class="filter-select">
+                                    <option>All Types</option>
+                                    <option>Personal Injury</option>
+                                    <option>Divorce/Family</option>
+                                    <option>DUI/DWI</option>
+                                    <option>Bankruptcy</option>
+                                    <option>Criminal Defense</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <span class="filter-label">Location:</span>
+                                <select class="filter-select">
+                                    <option>All Areas</option>
+                                    <option>Bronx County, NY</option>
+                                    <option>Queens County, NY</option>
+                                    <option>Kings County, NY</option>
+                                    <option>Manhattan, NY</option>
+                                    <option>Hudson County, NJ</option>
+                                    <option>Bergen County, NJ</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <span class="filter-label">Status:</span>
+                                <select class="filter-select">
+                                    <option>All Statuses</option>
+                                    <option>New</option>
+                                    <option>Contacted</option>
+                                    <option>Negotiating</option>
+                                    <option>Matched</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-chrome btn-sm" style="margin-left: auto;">
+                                <i class="fas fa-filter"></i>
+                                More Filters
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Lead ID</th>
+                                    <th>Phone Number</th>
+                                    <th>Case Type</th>
+                                    <th>Location</th>
+                                    <th>Qualification</th>
+                                    <th>Status</th>
+                                    <th>Received</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr onclick="showPage('detail')" style="cursor: pointer;">
+                                    <td><span class="lead-id">#LD-2025-0892</span></td>
+                                    <td>
+                                        <div class="phone-number">
+                                            <i class="fas fa-phone"></i>
+                                            (718) 555-0147
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="case-type">
+                                            <span class="case-badge personal-injury"></span>
+                                            Personal Injury
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Bronx County, NY
+                                        </div>
+                                    </td>
+                                    <td><span class="score-badge score-high"><i class="fas fa-star" style="font-size: 10px;"></i> 92/100</span></td>
+                                    <td><span class="status-badge status-new"><i class="fas fa-circle" style="font-size: 6px;"></i> New</span></td>
+                                    <td>
+                                        <div class="time-received">
+                                            <div class="time">2:34 PM</div>
+                                            <div class="date">Today</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showPage('detail')">
+                                                <i class="fas fa-eye"></i>
+                                                View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr onclick="showPage('detail')" style="cursor: pointer;">
+                                    <td><span class="lead-id">#LD-2025-0891</span></td>
+                                    <td>
+                                        <div class="phone-number">
+                                            <i class="fas fa-phone"></i>
+                                            (201) 555-0293
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="case-type">
+                                            <span class="case-badge divorce"></span>
+                                            Divorce/Family
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Hudson County, NJ
+                                        </div>
+                                    </td>
+                                    <td><span class="score-badge score-high"><i class="fas fa-star" style="font-size: 10px;"></i> 87/100</span></td>
+                                    <td><span class="status-badge status-contacted"><i class="fas fa-circle" style="font-size: 6px;"></i> Contacted</span></td>
+                                    <td>
+                                        <div class="time-received">
+                                            <div class="time">1:52 PM</div>
+                                            <div class="date">Today</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showPage('detail')">
+                                                <i class="fas fa-eye"></i>
+                                                View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr onclick="showPage('detail')" style="cursor: pointer;">
+                                    <td><span class="lead-id">#LD-2025-0890</span></td>
+                                    <td>
+                                        <div class="phone-number">
+                                            <i class="fas fa-phone"></i>
+                                            (347) 555-0168
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="case-type">
+                                            <span class="case-badge dui"></span>
+                                            DUI / DWI
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Queens County, NY
+                                        </div>
+                                    </td>
+                                    <td><span class="score-badge score-medium"><i class="fas fa-star-half-alt" style="font-size: 10px;"></i> 74/100</span></td>
+                                    <td><span class="status-badge status-negotiating"><i class="fas fa-circle" style="font-size: 6px;"></i> Negotiating</span></td>
+                                    <td>
+                                        <div class="time-received">
+                                            <div class="time">11:28 AM</div>
+                                            <div class="date">Today</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showPage('detail')">
+                                                <i class="fas fa-eye"></i>
+                                                View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr onclick="showPage('detail')" style="cursor: pointer;">
+                                    <td><span class="lead-id">#LD-2025-0889</span></td>
+                                    <td>
+                                        <div class="phone-number">
+                                            <i class="fas fa-phone"></i>
+                                            (212) 555-0421
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="case-type">
+                                            <span class="case-badge bankruptcy"></span>
+                                            Bankruptcy
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Manhattan, NY
+                                        </div>
+                                    </td>
+                                    <td><span class="score-badge score-high"><i class="fas fa-star" style="font-size: 10px;"></i> 89/100</span></td>
+                                    <td><span class="status-badge status-matched"><i class="fas fa-circle" style="font-size: 6px;"></i> Matched</span></td>
+                                    <td>
+                                        <div class="time-received">
+                                            <div class="time">10:15 AM</div>
+                                            <div class="date">Today</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showPage('detail')">
+                                                <i class="fas fa-eye"></i>
+                                                View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr onclick="showPage('detail')" style="cursor: pointer;">
+                                    <td><span class="lead-id">#LD-2025-0888</span></td>
+                                    <td>
+                                        <div class="phone-number">
+                                            <i class="fas fa-phone"></i>
+                                            (718) 555-0334
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="case-type">
+                                            <span class="case-badge criminal"></span>
+                                            Criminal Defense
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Kings County, NY
+                                        </div>
+                                    </td>
+                                    <td><span class="score-badge score-medium"><i class="fas fa-star-half-alt" style="font-size: 10px;"></i> 68/100</span></td>
+                                    <td><span class="status-badge status-new"><i class="fas fa-circle" style="font-size: 6px;"></i> New</span></td>
+                                    <td>
+                                        <div class="time-received">
+                                            <div class="time">9:47 AM</div>
+                                            <div class="date">Today</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showPage('detail')">
+                                                <i class="fas fa-eye"></i>
+                                                View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr onclick="showPage('detail')" style="cursor: pointer;">
+                                    <td><span class="lead-id">#LD-2025-0887</span></td>
+                                    <td>
+                                        <div class="phone-number">
+                                            <i class="fas fa-phone"></i>
+                                            (551) 555-0189
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="case-type">
+                                            <span class="case-badge personal-injury"></span>
+                                            Personal Injury
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Bergen County, NJ
+                                        </div>
+                                    </td>
+                                    <td><span class="score-badge score-high"><i class="fas fa-star" style="font-size: 10px;"></i> 94/100</span></td>
+                                    <td><span class="status-badge status-negotiating"><i class="fas fa-circle" style="font-size: 6px;"></i> Negotiating</span></td>
+                                    <td>
+                                        <div class="time-received">
+                                            <div class="time">Yesterday</div>
+                                            <div class="date">Jan 30, 2025</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showPage('detail')">
+                                                <i class="fas fa-eye"></i>
+                                                View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr onclick="showPage('detail')" style="cursor: pointer;">
+                                    <td><span class="lead-id">#LD-2025-0886</span></td>
+                                    <td>
+                                        <div class="phone-number">
+                                            <i class="fas fa-phone"></i>
+                                            (646) 555-0256
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="case-type">
+                                            <span class="case-badge divorce"></span>
+                                            Divorce/Family
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Bronx County, NY
+                                        </div>
+                                    </td>
+                                    <td><span class="score-badge score-low"><i class="fas fa-exclamation" style="font-size: 10px;"></i> 52/100</span></td>
+                                    <td><span class="status-badge status-new"><i class="fas fa-circle" style="font-size: 6px;"></i> New</span></td>
+                                    <td>
+                                        <div class="time-received">
+                                            <div class="time">Yesterday</div>
+                                            <div class="date">Jan 30, 2025</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); showPage('detail')">
+                                                <i class="fas fa-eye"></i>
+                                                View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        <div class="pagination-info">
+                            Showing 1-7 of 156 leads
+                        </div>
+                        <div class="pagination-actions">
+                            <button class="btn btn-chrome btn-sm" disabled>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="btn btn-chrome btn-sm">1</button>
+                            <button class="btn btn-chrome btn-sm">2</button>
+                            <button class="btn btn-chrome btn-sm">3</button>
+                            <span style="color: var(--text-muted); padding: 0 8px;">...</span>
+                            <button class="btn btn-chrome btn-sm">23</button>
+                            <button class="btn btn-chrome btn-sm">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LEAD DETAIL PAGE -->
+            <div id="detail-page" class="page">
+                <div class="lead-detail-header">
+                    <div class="lead-detail-title">
+                        <button class="btn btn-chrome back-btn" onclick="showPage('dashboard')">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <div class="lead-title-info">
+                            <h1>Lead #LD-2025-0892</h1>
+                            <p>Received today at 2:34 PM via AI Intake System</p>
+                        </div>
+                    </div>
+                    <div class="lead-actions">
+                        <button class="btn btn-chrome">
+                            <i class="fas fa-print"></i>
+                            Print
+                        </button>
+                        <button class="btn btn-chrome">
+                            <i class="fas fa-envelope"></i>
+                            Email
+                        </button>
+                    </div>
+                </div>
+
+                <div class="detail-grid">
+                    <div class="detail-main">
+                        <!-- Contact Information -->
+                        <div class="chrome-card">
+                            <div class="card-header">
+                                <div class="section-header" style="margin: 0;">
+                                    <div class="section-icon blue">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="section-title-text">
+                                        <h3>Contact Information</h3>
+                                        <p>Caller details and communication preferences</p>
+                                    </div>
+                                </div>
+                                <span class="status-badge status-new"><i class="fas fa-circle" style="font-size: 6px;"></i> New Lead</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-section">
+                                    <div class="info-grid">
+                                        <div class="info-item">
+                                            <span class="info-label">Phone Number</span>
+                                            <span class="info-value phone large">
+                                                <i class="fas fa-phone" style="width: 28px; height: 28px; font-size: 12px; border-radius: 8px;"></i>
+                                                (718) 555-0147
+                                            </span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Preferred Language</span>
+                                            <span class="info-value">
+                                                <i class="fas fa-globe" style="color: var(--accent-blue); margin-right: 6px;"></i>
+                                                Spanish (Español)
+                                            </span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Case Type</span>
+                                            <span class="info-value">
+                                                <span class="case-badge personal-injury" style="display: inline-block; vertical-align: middle; margin-right: 6px;"></span>
+                                                Personal Injury
+                                            </span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Geographic Segment</span>
+                                            <span class="info-value">
+                                                <i class="fas fa-map-marker-alt" style="color: var(--accent-blue); margin-right: 6px;"></i>
+                                                Bronx County, NY
+                                            </span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Qualification Score</span>
+                                            <span class="info-value">
+                                                <span class="score-badge score-high"><i class="fas fa-star" style="font-size: 10px;"></i> 92/100 - High Priority</span>
+                                            </span>
+                                        </div>
+                                        <div class="info-item">
+                                            <span class="info-label">Urgency Level</span>
+                                            <span class="info-value" style="color: var(--accent-red);">
+                                                <i class="fas fa-exclamation-circle" style="margin-right: 6px;"></i>
+                                                High (Statute deadline approaching)
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI Intake Summary -->
+                        <div class="chrome-card">
+                            <div class="card-header">
+                                <div class="section-header" style="margin: 0;">
+                                    <div class="section-icon green">
+                                        <i class="fas fa-robot"></i>
+                                    </div>
+                                    <div class="section-title-text">
+                                        <h3>AI Intake Summary</h3>
+                                        <p>Automated transcript analysis and key insights</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="ai-summary-box">
+                                    <div class="ai-summary-header">
+                                        <i class="fas fa-magic"></i>
+                                        <span>AI-Generated Case Summary</span>
+                                    </div>
+                                    <div class="ai-summary-content">
+                                        <p><strong>Nature of Incident:</strong> Slip and fall accident at a commercial property in the Bronx. Caller reports slipping on a wet floor that lacked proper warning signage.</p>
+                                        
+                                        <p><strong>Injuries Sustained:</strong> Lower back injury requiring ongoing physical therapy. Caller has medical documentation from Lincoln Hospital visit.</p>
+                                        
+                                        <p><strong>Timeline:</strong> Incident occurred approximately 6 weeks ago. Caller is within the statute of limitations but approaching the deadline for certain claims.</p>
+                                        
+                                        <p><strong>Liability Indicators:</strong> Strong - property owner had notice of recurring wet floor issues. No warning signs present at time of incident.</p>
+                                        
+                                        <p><strong>Insurance Status:</strong> Property is insured. Caller has not yet filed a claim with the property owner's insurance.</p>
+                                        
+                                        <p><strong>Caller Demographics:</strong> Spanish-speaking, employed full-time, seeking representation on contingency basis. Very motivated to proceed quickly.</p>
+                                    </div>
+                                    <div class="ai-tags">
+                                        <span class="ai-tag"><i class="fas fa-check" style="color: var(--accent-green); margin-right: 4px;"></i>Clear Liability</span>
+                                        <span class="ai-tag"><i class="fas fa-check" style="color: var(--accent-green); margin-right: 4px;"></i>Documented Injuries</span>
+                                        <span class="ai-tag"><i class="fas fa-check" style="color: var(--accent-green); margin-right: 4px;"></i>Spanish Speaker</span>
+                                        <span class="ai-tag"><i class="fas fa-exclamation" style="color: var(--accent-amber); margin-right: 4px;"></i>Time Sensitive</span>
+                                        <span class="ai-tag"><i class="fas fa-building" style="color: var(--accent-blue); margin-right: 4px;"></i>Commercial Property</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Intake Notes -->
+                        <div class="chrome-card">
+                            <div class="card-header">
+                                <div class="section-header" style="margin: 0;">
+                                    <div class="section-icon amber">
+                                        <i class="fas fa-clipboard-list"></i>
+                                    </div>
+                                    <div class="section-title-text">
+                                        <h3>Intake Notes</h3>
+                                        <p>Full AI transcript and additional notes</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <textarea class="notes-area" readonly>AI TRANSCRIPT SUMMARY - Call ID: AI-2025-0892
+
+[AI GREETING - Spanish]
+AI: Buenos días, gracias por llamar a Tus Abogados 24/7. Mi nombre es el asistente virtual. ¿En qué puedo ayudarle hoy?
+
+[CALLER RESPONSE]
+Caller: Hola, tuve un accidente. Me caí en una tienda hace como un mes y medio y me duele mucho la espalda.
+
+[INTAKE QUESTIONS]
+AI: Lo siento mucho por lo que le pasó. Voy a hacerle algunas preguntas para entender mejor su caso y conectarle con el abogado adecuado.
+
+AI: ¿Puede describirme exactamente cómo ocurrió el accidente?
+Caller: Estaba en una bodega en el Bronx, en la calle 149. El piso estaba mojado y no había ningún letrero de cuidado. Me resbalé y caí de espaldas.
+
+AI: ¿Sufrió alguna lesión que haya requerido atención médica?
+Caller: Sí, fui al hospital Lincoln esa misma noche. Me dijeron que tengo un esguince lumbar y me mandaron a terapia física. He ido a 6 sesiones ya.
+
+AI: ¿Tiene copias de los reportes médicos y las facturas?
+Caller: Sí, tengo todo. También tomé fotos del piso mojado ese mismo día.
+
+AI: ¿Sabe si esa tienda ha tenido problemas similares antes?
+Caller: El vecino que me ayudó a levantarme me dijo que eso pasa todo el tiempo ahí, que el techo gotea cuando llueve.
+
+AI: ¿Ha contactado a alguien de la tienda o a un abogado sobre esto?
+Caller: No, no he hecho nada. Un primo me recomendó que llamara aquí.
+
+[LEAD QUALIFICATION]
+AI: Gracias por toda esa información. Basándome en lo que me cuenta, su caso tiene buenas posibilidades. Un abogado de lesiones personales podrá ayudarle. Voy a transferir esta información para que un abogado lo contacte dentro de las próximas 2 horas.
+
+Caller: ¿Cuánto cuesta?
+AI: Los abogados en nuestra red trabajan por contingencia - no paga nada a menos que ganen su caso. La consulta inicial es gratuita.
+
+Caller: Perfecto, gracias.
+
+[CALL END - Duration: 4m 32s]
+
+---
+AI ASSESSMENT: HIGH QUALITY LEAD - Immediate attorney assignment recommended
+Case Value Estimate: $15,000 - $45,000 range
+Priority: HIGH (approaching statute deadlines)</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-sidebar">
+                        <!-- Price & Actions -->
+                        <div class="chrome-card">
+                            <div class="card-body">
+                                <div class="price-display">
+                                    <div class="price-label">Current Lead Price</div>
+                                    <div class="price-value">$350</div>
+                                    <div class="price-note">Negotiable based on case merits</div>
+                                </div>
+                                
+                                <div class="action-panel" style="margin-top: 20px;">
+                                    <div class="action-panel-title">Lead Actions</div>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-success action-btn btn-lg" onclick="showNotification('Match & Hand-off initiated')">
+                                            <i class="fas fa-handshake"></i>
+                                            Match & Hand-off to Attorney
+                                        </button>
+                                        <button class="btn btn-amber action-btn" onclick="showNotification('Price negotiation mode activated')">
+                                            <i class="fas fa-dollar-sign"></i>
+                                            Negotiate Lead Price
+                                        </button>
+                                        <button class="btn btn-purple action-btn" onclick="showNotification('Lead flagged for human review')">
+                                            <i class="fas fa-flag"></i>
+                                            Flag for Human Review
+                                        </button>
+                                        <button class="btn btn-danger action-btn" onclick="showNotification('Lead archived')">
+                                            <i class="fas fa-archive"></i>
+                                            Archive Lead
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lead Timeline -->
+                        <div class="chrome-card">
+                            <div class="card-header">
+                                <div class="card-title">Lead Timeline</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="timeline">
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot completed"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-time">Today, 2:34 PM</div>
+                                            <div class="timeline-text"><strong>AI Intake Completed</strong></div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-time">Pending</div>
+                                            <div class="timeline-text">Lead Review</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot" style="border-color: var(--metal-dark);"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-time">Pending</div>
+                                            <div class="timeline-text">Attorney Match</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item" style="padding-bottom: 0;">
+                                        <div class="timeline-dot" style="border-color: var(--metal-dark);"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-time">Pending</div>
+                                            <div class="timeline-text">First Contact</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Stats -->
+                        <div class="chrome-card">
+                            <div class="card-header">
+                                <div class="card-title">Lead Metrics</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="info-section" style="margin-bottom: 16px;">
+                                    <span class="info-label">Call Duration</span>
+                                    <span class="info-value">4m 32s</span>
+                                </div>
+                                <div class="info-section" style="margin-bottom: 16px;">
+                                    <span class="info-label">Language Detected</span>
+                                    <span class="info-value">Spanish (99% confidence)</span>
+                                </div>
+                                <div class="info-section" style="margin-bottom: 16px;">
+                                    <span class="info-label">Sentiment Analysis</span>
+                                    <span class="info-value" style="color: var(--accent-green);">
+                                        <i class="fas fa-smile"></i> Positive & Motivated
+                                    </span>
+                                </div>
+                                <div class="info-section" style="margin-bottom: 0;">
+                                    <span class="info-label">Evidence Provided</span>
+                                    <span class="info-value">
+                                        <i class="fas fa-check-circle" style="color: var(--accent-green);"></i> Photos, Medical Records
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Similar Cases -->
+                        <div class="chrome-card">
+                            <div class="card-header">
+                                <div class="card-title">Similar Closed Cases</div>
+                            </div>
+                            <div class="card-body">
+                                <div style="padding: 12px; background: linear-gradient(180deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.02) 100%); border-radius: 10px; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.1);">
+                                    <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Bronx Slip & Fall - 2024</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">Settlement: <strong style="color: var(--accent-green);">$42,500</strong></div>
+                                </div>
+                                <div style="padding: 12px; background: linear-gradient(180deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.02) 100%); border-radius: 10px; margin-bottom: 12px; border: 1px solid rgba(16, 185, 129, 0.1);">
+                                    <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Commercial Property Injury - 2024</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">Settlement: <strong style="color: var(--accent-green);">$38,000</strong></div>
+                                </div>
+                                <div style="padding: 12px; background: linear-gradient(180deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.02) 100%); border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.1);">
+                                    <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">Back Injury Premises Liability - 2023</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">Settlement: <strong style="color: var(--accent-green);">$67,500</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Page Toggle for Demo -->
+    <div class="page-toggle">
+        <button class="btn btn-chrome btn-sm" onclick="showPage('dashboard')" id="btn-dashboard">
+            <i class="fas fa-table"></i>
+            Dashboard
+        </button>
+        <button class="btn btn-chrome btn-sm" onclick="showPage('detail')" id="btn-detail">
+            <i class="fas fa-file-alt"></i>
+            Lead Detail
+        </button>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification" style="display: none; position: fixed; top: 24px; right: 24px; background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; padding: 16px 24px; border-radius: 14px; box-shadow: 0 10px 30px rgba(30, 58, 95, 0.3); z-index: 1000; align-items: center; gap: 12px; font-weight: 500;">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">Action completed</span>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        let retellState = {
+            agentId: null,
+            llmId: null,
+        };
+
+        function normalizeAgentsPayload(payload) {
+            if (!payload) return [];
+            if (Array.isArray(payload)) return payload;
+            if (Array.isArray(payload.agents)) return payload.agents;
+            if (Array.isArray(payload.data)) return payload.data;
+            return [];
+        }
+
+        function normalizePhoneNumbersPayload(payload) {
+            if (!payload) return [];
+            if (Array.isArray(payload)) return payload;
+            if (Array.isArray(payload.phone_numbers)) return payload.phone_numbers;
+            if (Array.isArray(payload.data)) return payload.data;
+            return [];
+        }
+
+        function pickLatestAgent(agents) {
+            if (!agents.length) return null;
+            const tusagatos = agents.filter(agent => (agent.agent_name || '').includes('TusaGatos'));
+            const pool = tusagatos.length ? tusagatos : agents;
+            return pool.sort((a, b) => (b.last_modification_timestamp || 0) - (a.last_modification_timestamp || 0))[0];
+        }
+
+        async function loadRetellPanel() {
+            const statusEl = document.getElementById('retell-status');
+            const statusText = document.getElementById('retell-status-text');
+            const agentNameEl = document.getElementById('retell-agent-name');
+            const agentIdEl = document.getElementById('retell-agent-id');
+            const llmIdEl = document.getElementById('retell-llm-id');
+            const phoneCurrentEl = document.getElementById('retell-phone-current');
+            const phoneMetaEl = document.getElementById('retell-phone-meta');
+            const phoneSelect = document.getElementById('retell-phone-select');
+            const demoNumberEl = document.getElementById('retell-demo-number');
+
+            try {
+                const health = await api.health();
+                const online = Boolean(health && health.retell_connected);
+                if (statusEl) statusEl.dataset.state = online ? 'online' : 'offline';
+                if (statusText) statusText.textContent = online ? 'RetellAI Connected' : 'RetellAI Disconnected';
+            } catch {
+                if (statusEl) statusEl.dataset.state = 'offline';
+                if (statusText) statusText.textContent = 'RetellAI Disconnected';
+            }
+
+            let selectedAgent = null;
+            try {
+                const agentsRes = await api.listRetellAgents();
+                if (agentsRes.success) {
+                    const agents = normalizeAgentsPayload(agentsRes.data);
+                    selectedAgent = pickLatestAgent(agents);
+                }
+            } catch (e) {
+                selectedAgent = null;
+            }
+
+            if (selectedAgent) {
+                retellState.agentId = selectedAgent.agent_id;
+                retellState.llmId = selectedAgent.response_engine ? selectedAgent.response_engine.llm_id : null;
+                if (agentNameEl) agentNameEl.textContent = selectedAgent.agent_name || 'AI Receptionist';
+                if (agentIdEl) agentIdEl.textContent = `Agent ID: ${selectedAgent.agent_id}`;
+                if (llmIdEl) llmIdEl.textContent = `LLM ID: ${retellState.llmId || '—'}`;
+            } else {
+                retellState.agentId = null;
+                retellState.llmId = null;
+                if (agentNameEl) agentNameEl.textContent = 'Not created';
+                if (agentIdEl) agentIdEl.textContent = 'Agent ID: —';
+                if (llmIdEl) llmIdEl.textContent = 'LLM ID: —';
+            }
+
+            let numbers = [];
+            try {
+                const numbersRes = await api.listRetellPhoneNumbers();
+                if (numbersRes.success) {
+                    numbers = normalizePhoneNumbersPayload(numbersRes.data);
+                }
+            } catch (e) {
+                numbers = [];
+            }
+
+            if (phoneSelect) {
+                phoneSelect.innerHTML = '';
+                if (numbers.length) {
+                    numbers.forEach(number => {
+                        const option = document.createElement('option');
+                        option.value = number.phone_number;
+                        option.textContent = number.phone_number_pretty || number.phone_number;
+                        if (retellState.agentId && number.inbound_agent_id === retellState.agentId) {
+                            option.selected = true;
+                        }
+                        phoneSelect.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = 'No numbers found';
+                    phoneSelect.appendChild(option);
+                }
+            }
+
+            const connectedNumber = numbers.find(number => retellState.agentId && number.inbound_agent_id === retellState.agentId);
+            if (connectedNumber) {
+                if (phoneCurrentEl) phoneCurrentEl.textContent = connectedNumber.phone_number_pretty || connectedNumber.phone_number;
+                if (demoNumberEl) demoNumberEl.textContent = connectedNumber.phone_number_pretty || connectedNumber.phone_number;
+                if (phoneMetaEl) phoneMetaEl.textContent = `Inbound agent: ${connectedNumber.inbound_agent_id}`;
+            } else {
+                if (phoneCurrentEl) phoneCurrentEl.textContent = 'Not connected';
+                if (demoNumberEl) demoNumberEl.textContent = '—';
+                if (phoneMetaEl) phoneMetaEl.textContent = 'Select a number and connect it to the agent.';
+            }
+        }
+
+        async function setupRetellAgent() {
+            showNotification('Setting up AI Receptionist...');
+            try {
+                const result = await api.setupAgent();
+                if (result.success) {
+                    const agentId = result.agent_id;
+                    retellState.agentId = agentId;
+                    retellState.llmId = result.llm_id || null;
+                    showNotification(`Agent created! ID: ${agentId.slice(0, 8)}...`);
+                    await loadRetellPanel();
+                } else {
+                    showNotification('Error: ' + (result.detail || result.error || 'Unknown error'));
+                }
+            } catch (e) {
+                showNotification('Failed to setup - check backend');
+            }
+        }
+
+        async function connectSelectedNumber() {
+            const phoneSelect = document.getElementById('retell-phone-select');
+            const phoneNumber = phoneSelect ? phoneSelect.value : '';
+
+            if (!retellState.agentId) {
+                showNotification('Create an agent first');
+                return;
+            }
+            if (!phoneNumber) {
+                showNotification('Select a phone number');
+                return;
+            }
+
+            showNotification('Connecting phone number...');
+            try {
+                const result = await api.connectNumber(phoneNumber, retellState.agentId);
+                if (result.success) {
+                    showNotification('✅ Phone connected!');
+                    await loadRetellPanel();
+                } else {
+                    showNotification('Error: ' + (result.detail || result.error || 'Unknown error'));
+                }
+            } catch (e) {
+                showNotification('Connection failed - check backend');
+            }
+        }
+
+        async function testIncomingCall() {
+            showNotification('Simulating incoming call...');
+            try {
+                const result = await api.testWebhook();
+                if (result.success) {
+                    showNotification('✅ Test lead created!');
+                    loadDashboard();
+                }
+            } catch (e) {
+                showNotification('Test failed - check backend');
+            }
+        }
+
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageName + '-page').classList.add('active');
+            
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Update toggle buttons
+            document.querySelectorAll('.page-toggle .btn').forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-chrome');
+            });
+            
+            if (pageName === 'dashboard') {
+                document.getElementById('btn-dashboard').classList.remove('btn-chrome');
+                document.getElementById('btn-dashboard').classList.add('btn-primary');
+                document.querySelector('.nav-item').classList.add('active');
+            } else {
+                document.getElementById('btn-detail').classList.remove('btn-chrome');
+                document.getElementById('btn-detail').classList.add('btn-primary');
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const text = document.getElementById('notification-text');
+            text.textContent = message;
+            notification.style.display = 'flex';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // Initialize
+        showPage('dashboard');
+        loadDashboard();
+        loadRetellPanel();
+    </script>
+</body>
+</html>

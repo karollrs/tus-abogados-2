@@ -1,0 +1,21 @@
+# Tusa Gato's 24/7 - Backend Dependencies
+
+# FastAPI Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+
+# Convex Database
+convex==0.6.0
+
+# HTTP Client
+httpx==0.26.0
+
+# Data Validation
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Environment
+python-dotenv==1.0.0
+
+# Utilities
+python-multipart==0.0.6
